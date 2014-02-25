@@ -42,7 +42,7 @@ use LaTeX::Encode;
 use LaTeX::Table;
 
 
-our $VERSION = 3.02.01;           # Update "=head1 VERSION" below!!!!
+our $VERSION = '3.02.01';           # Update "=head1 VERSION" below!!!!
 our $DEBUG; $DEBUG = 0 unless defined $DEBUG;
 our $ERROR   = '';
 our $FILTER  = 'latex';

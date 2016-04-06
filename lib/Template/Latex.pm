@@ -55,10 +55,11 @@ sub new {
     my $class  = shift;
     my $config = @_ && ref $_[0] eq 'HASH' ? shift : { @_ };
     my $self   = $class->SUPER::new($config) || return;
-
-#     # set default format from config option
-#     $self->latex_format($config->{ LATEX_FORMAT })
-#         if $config->{ LATEX_FORMAT };
+    my %options;
+    
+    #     # set default format from config option
+    $options{format} = $config->{LATEX_FORMAT}
+        if $config->{LATEX_FORMAT};
 
 #     # set latex paths from config options
 #     $self->latex_paths({
@@ -72,7 +73,7 @@ sub new {
 
 
     # install the latex filter
-    Template::Plugin::Latex->new($self->context, {});
+    Template::Plugin::Latex->new($self->context, \%options);
 
    #$self->define_filter( $self->context() );
 

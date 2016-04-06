@@ -51,7 +51,7 @@ my $ttcfg = {
 if ($run_tests){
     test_expect(\*DATA, $ttcfg);
 } else {
-    ok('1', 'Tests sipped, LATEX_TESTING not set');
+    skip_all 'Tests skipped, LATEX_TESTING and ALL_TESTING not set';
 }
 
 sub clean_file {

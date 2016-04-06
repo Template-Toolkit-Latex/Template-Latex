@@ -26,6 +26,8 @@ use Template::Test::Latex;
 
 my $run_tests = $ENV{LATEX_TESTING} || $ENV{ALL_TESTING};
 
+$Template::Test::DEBUG = 1;
+
 my $ttcfg = {
     FILTERS => {
         head => [ \&head_factory, 1],
@@ -56,7 +58,7 @@ sub head_factory {
 __END__
 -- test --
 [% USE Latex;
-   out = FILTER latex(format="pdf")
+   out = FILTER latex(format="pdf(pdflatex)")
 -%]
 \documentclass{article}
 \begin{document}
@@ -70,7 +72,7 @@ This is the introduction.
 
 
 -- test --
-[% USE Latex format="pdf";
+[% USE Latex format="pdf(pdflatex)";
    out = FILTER latex
 -%]
 \documentclass{article}
@@ -87,7 +89,7 @@ This is the introduction.
 -- test --
 [% USE Latex;
    TRY; 
-     out = FILTER latex("pdf") 
+     out = FILTER latex("pdf(pdflatex)") 
 -%]
 \documentclass{article}
 \begin{document}

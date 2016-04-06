@@ -75,8 +75,6 @@ sub new {
     # install the latex filter
     Template::Plugin::Latex->new($self->context, \%options);
 
-   #$self->define_filter( $self->context() );
-
     return $self;
 }
 
@@ -148,62 +146,6 @@ sub latex_paths {
         };
     }
 }
-
-1;
-
-__END__
-
-
-#------------------------------------------------------------------------
-# define_filter($context, $config)
-#
-# This method defines the latex filter in the context specified as the 
-# first argument.  A list or hash ref of named parameters can follow
-# providing default configuration options.  
-#------------------------------------------------------------------------
-
-# sub define_filter {
-#     my $class   = shift;
-#     my $context = shift;
-#     my $default = @_ && ref $_[0] eq 'HASH' ? shift : { @_ };
-#     my $filter  = $default->{ filter } || $FILTER;
-
-#     # default any config item not set to values in package variables
-#     $default->{ format    } ||= $FORMAT;
-#     $default->{ latex     } ||= $LATEX;
-#     $default->{ pdflatex  } ||= $PDFLATEX;
-#     $default->{ dvips     } ||= $DVIPS;
-#     $default->{ ps2pdf    } ||= $PS2PDF;
-#     $default->{ bibtex    } ||= $BIBTEX;
-#     $default->{ makeindex } ||= $MAKEINDEX;
-
-#     # define a factory subroutine to be called when the filter is used.
-#     my $factory = sub { 
-#         my $context = shift;
-#         my $config  = @_ && ref $_[0] eq 'HASH' ? pop : { };
-
-#         # merge any configuration parameters specified when the filter
-#         # is used with the defaults provided when the filter was defined
-#         $config->{ $_ } ||= $default->{ $_ } 
-#             for (qw( format latex pdflatex dvips ps2pdf bibtex makeindex ));
-
-#         # output file can be specified as the first argument
-#         $config->{ output } = shift if @_;
-
-#         $config->{ DEBUG } ||= $DEBUG;
-
-#         # return an anonymous filter subroutine which calls the real
-#         # filter() method passing the context and merged config params
-#         return sub {
-#             Template::Latex::Driver->run(shift, $context, $config);
-#         };
-#     };
-
-#     # install the filter factory in the context
-#     $context->define_filter( $filter => $factory, 1 );
-#     $context->define_filter( detex => \&detex_filter );
-# }
-
 
 1;
 

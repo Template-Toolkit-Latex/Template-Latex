@@ -61,16 +61,13 @@ sub new {
     $options{format} = $config->{LATEX_FORMAT}
         if $config->{LATEX_FORMAT};
 
-#     # set latex paths from config options
-#     $self->latex_paths({
-#         latex     => $config->{ LATEX_PATH     },
-#         pdflatex  => $config->{ PDFLATEX_PATH  },
-#         dvips     => $config->{ DVIPS_PATH     },
-#         ps2pdf    => $config->{ PS2PDF_PATH    },
-#         bibtex    => $config->{ BIBTEX_PATH    },
-#         makeindex => $config->{ MAKEINDEX_PATH },
-#     });
 
+    my @unsupported = ( 'LATEX', 'PDFLATEX', 'DVIPS', 'PS2PDF',
+                        'BIBTEX', 'MAKEINDEX' );
+    
+    warn "Template::Latex no longer supports various *_PATH options to new()"
+        if scalar(grep { defined $config->{"${_}_PATH"} } @unsupported) > 0;
+    
 
     # install the latex filter
     Template::Plugin::Latex->new($self->context, \%options);
@@ -125,6 +122,10 @@ sub makeindex_path {
     return LaTeX::Driver->program_path('makeindex', @_);
 }
 
+sub xelatex_path {
+    my $class = shift;
+    return LaTeX::Driver->program_path('xelatex', @_);
+}
 
 #------------------------------------------------------------------------
 # latex_paths()
@@ -184,29 +185,25 @@ module.
     $tt->process($input, \%vars, $output)
         || die $t->error();
 
-It supports a number of additional configuration parameters. The
-C<LATEX_PATH>, C<PDFLATEX_PATH> and C<DVIPS_PATH> options can be used
-to specify the paths to the F<latex>, F<pdflatex> and F<dvips> program
-on your system, respectively.  These are usually hard-coded in the
-Template::Latex C<$LATEX>, C<$PDFLATEX> and C<$DVIPS> package
-variables based on the values set when you run C<perl Makefile.PL> to
-configure Template::Latex at installation time.  You only need to
-specify these paths if they've moved since you installed
-Template::Latex or if you want to use different versions for some
-reason.
-
-    my $tt = Template::Latex->new({
-        LATEX_PATH    => '/usr/bin/latex',
-        PDFLATEX_PATH => '/usr/bin/pdflatex',
-        DVIPS_PATH    => '/usr/bin/dvips',
-    });
-
-It also provides the C<LATEX_FORMAT> option to specify the default
+It supports the C<LATEX_FORMAT> option to specify the default
 output format.  This can be set to C<pdf>, C<ps> or C<dvi>.
 
     my $tt = Template::Latex->new({
         LATEX_FORMAT  => 'pdf',
     });
+
+Previous versions of the module supported the C<LATEX_PATH>,
+C<PDFLATEX_PATH>, C<DVIPS_PATH>, C<PS2PDF_PATH>, C<BIBTEX_PATH>
+and C<MAKEINDEX_PATH> options. These are now deprecated
+and their use will result in a deprecation warning, as their use
+would result in modifying global state, disallowing different values
+for different simultaneous instances.
+
+To change the paths of the various programs being called by the
+LaTeX::Driver module which this module wraps, the user is referred
+to the API of that module.  This module provides a number of (wrapper)
+class methods around the LaTeX::Driver routine (latex_path() and
+friends).
 
 The C<latex> filter is automatically defined when you use the
 Template::Latex module.  There's no need to load the Latex plugin in

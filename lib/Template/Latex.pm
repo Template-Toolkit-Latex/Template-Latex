@@ -43,7 +43,7 @@ use Template::Exception;
 use Template::Plugin::Latex;
 use LaTeX::Driver;
 
-our $VERSION  = 3.04;
+our $VERSION  = 3.07;
 our $DEBUG    = 0 unless defined $DEBUG;
 our $ERROR    = '';
 our $FILTER   = 'latex';        # default filter name
@@ -55,26 +55,22 @@ sub new {
     my $class  = shift;
     my $config = @_ && ref $_[0] eq 'HASH' ? shift : { @_ };
     my $self   = $class->SUPER::new($config) || return;
+    my %options;
+    
+    #     # set default format from config option
+    $options{format} = $config->{LATEX_FORMAT}
+        if $config->{LATEX_FORMAT};
 
-#     # set default format from config option
-#     $self->latex_format($config->{ LATEX_FORMAT })
-#         if $config->{ LATEX_FORMAT };
 
-#     # set latex paths from config options
-#     $self->latex_paths({
-#         latex     => $config->{ LATEX_PATH     },
-#         pdflatex  => $config->{ PDFLATEX_PATH  },
-#         dvips     => $config->{ DVIPS_PATH     },
-#         ps2pdf    => $config->{ PS2PDF_PATH    },
-#         bibtex    => $config->{ BIBTEX_PATH    },
-#         makeindex => $config->{ MAKEINDEX_PATH },
-#     });
-
+    my @unsupported = ( 'LATEX', 'PDFLATEX', 'DVIPS', 'PS2PDF',
+                        'BIBTEX', 'MAKEINDEX' );
+    
+    warn "Template::Latex no longer supports various *_PATH options to new()"
+        if scalar(grep { defined $config->{"${_}_PATH"} } @unsupported) > 0;
+    
 
     # install the latex filter
-    Template::Plugin::Latex->new($self->context, {});
-
-   #$self->define_filter( $self->context() );
+    Template::Plugin::Latex->new($self->context, \%options);
 
     return $self;
 }
@@ -126,6 +122,10 @@ sub makeindex_path {
     return LaTeX::Driver->program_path('makeindex', @_);
 }
 
+sub xelatex_path {
+    my $class = shift;
+    return LaTeX::Driver->program_path('xelatex', @_);
+}
 
 #------------------------------------------------------------------------
 # latex_paths()
@@ -147,62 +147,6 @@ sub latex_paths {
         };
     }
 }
-
-1;
-
-__END__
-
-
-#------------------------------------------------------------------------
-# define_filter($context, $config)
-#
-# This method defines the latex filter in the context specified as the 
-# first argument.  A list or hash ref of named parameters can follow
-# providing default configuration options.  
-#------------------------------------------------------------------------
-
-# sub define_filter {
-#     my $class   = shift;
-#     my $context = shift;
-#     my $default = @_ && ref $_[0] eq 'HASH' ? shift : { @_ };
-#     my $filter  = $default->{ filter } || $FILTER;
-
-#     # default any config item not set to values in package variables
-#     $default->{ format    } ||= $FORMAT;
-#     $default->{ latex     } ||= $LATEX;
-#     $default->{ pdflatex  } ||= $PDFLATEX;
-#     $default->{ dvips     } ||= $DVIPS;
-#     $default->{ ps2pdf    } ||= $PS2PDF;
-#     $default->{ bibtex    } ||= $BIBTEX;
-#     $default->{ makeindex } ||= $MAKEINDEX;
-
-#     # define a factory subroutine to be called when the filter is used.
-#     my $factory = sub { 
-#         my $context = shift;
-#         my $config  = @_ && ref $_[0] eq 'HASH' ? pop : { };
-
-#         # merge any configuration parameters specified when the filter
-#         # is used with the defaults provided when the filter was defined
-#         $config->{ $_ } ||= $default->{ $_ } 
-#             for (qw( format latex pdflatex dvips ps2pdf bibtex makeindex ));
-
-#         # output file can be specified as the first argument
-#         $config->{ output } = shift if @_;
-
-#         $config->{ DEBUG } ||= $DEBUG;
-
-#         # return an anonymous filter subroutine which calls the real
-#         # filter() method passing the context and merged config params
-#         return sub {
-#             Template::Latex::Driver->run(shift, $context, $config);
-#         };
-#     };
-
-#     # install the filter factory in the context
-#     $context->define_filter( $filter => $factory, 1 );
-#     $context->define_filter( detex => \&detex_filter );
-# }
-
 
 1;
 
@@ -241,29 +185,25 @@ module.
     $tt->process($input, \%vars, $output)
         || die $t->error();
 
-It supports a number of additional configuration parameters. The
-C<LATEX_PATH>, C<PDFLATEX_PATH> and C<DVIPS_PATH> options can be used
-to specify the paths to the F<latex>, F<pdflatex> and F<dvips> program
-on your system, respectively.  These are usually hard-coded in the
-Template::Latex C<$LATEX>, C<$PDFLATEX> and C<$DVIPS> package
-variables based on the values set when you run C<perl Makefile.PL> to
-configure Template::Latex at installation time.  You only need to
-specify these paths if they've moved since you installed
-Template::Latex or if you want to use different versions for some
-reason.
-
-    my $tt = Template::Latex->new({
-        LATEX_PATH    => '/usr/bin/latex',
-        PDFLATEX_PATH => '/usr/bin/pdflatex',
-        DVIPS_PATH    => '/usr/bin/dvips',
-    });
-
-It also provides the C<LATEX_FORMAT> option to specify the default
+It supports the C<LATEX_FORMAT> option to specify the default
 output format.  This can be set to C<pdf>, C<ps> or C<dvi>.
 
     my $tt = Template::Latex->new({
         LATEX_FORMAT  => 'pdf',
     });
+
+Previous versions of the module supported the C<LATEX_PATH>,
+C<PDFLATEX_PATH>, C<DVIPS_PATH>, C<PS2PDF_PATH>, C<BIBTEX_PATH>
+and C<MAKEINDEX_PATH> options. These are now deprecated
+and their use will result in a deprecation warning, as their use
+would result in modifying global state, disallowing different values
+for different simultaneous instances.
+
+To change the paths of the various programs being called by the
+LaTeX::Driver module which this module wraps, the user is referred
+to the API of that module.  This module provides a number of (wrapper)
+class methods around the LaTeX::Driver routine (latex_path() and
+friends).
 
 The C<latex> filter is automatically defined when you use the
 Template::Latex module.  There's no need to load the Latex plugin in

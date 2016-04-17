@@ -64,7 +64,7 @@ sub new {
         my $factory_context = shift;
         my $filter_opts = ref $_[-1] eq 'HASH' ? pop : { };
         my $filter_args = [ @_ ];
-        @$filter_opts{ keys %$options } = values %$options;
+        $filter_opts->{$_} //= $options->{$_} for keys %$options;
         return sub {
             # Template::Plugin::Latex::_filter->run($context, $filter_opts, $filter_args, @_);
             _tt_latex_filter($class, $factory_context, $filter_opts, $filter_args, @_);
@@ -76,7 +76,7 @@ sub new {
         my $factory_context = shift;
         my $filter_opts = ref $_[-1] eq 'HASH' ? pop : { };
         my $filter_args = [ @_ ];
-        @$filter_opts{ keys %$options } = values %$options;
+        $filter_opts->{$_} //= $options->{$_} for keys %$options;
         return sub {
             # Template::Plugin::Latex::_filter->run($context, $filter_opts, $filter_args, @_);
             _tt_latex_encode_filter($class, $factory_context, $filter_opts, $filter_args, @_);
@@ -86,7 +86,7 @@ sub new {
     # and a closure to represent the plugin
     my $plugin = sub {
         my $plugopt = ref $_[-1] eq 'HASH' ? pop : { };
-        @$plugopt{ keys %$options } = values %$options;
+        $plugopt->{$_} //= $options->{$_} for keys %$options;
         # Template::Plugin::Latex::_filter->run($context, $plugopt, @_ );
         _tt_latex_filter($class, $context, $plugopt, {}, @_ );
     };

@@ -85,25 +85,4 @@ This is the introduction.
 %!PS
 
 
--- test --
-[% USE Latex;
-   TRY; 
-     out = FILTER latex("ps(xelatex)") 
--%]
-\documentclass{article}
-\begin{document}
-\section{Introduction}
-\badmacro
-This is the introduction.
-\end{document}
-[%   END; 
-     out | head(100, 1);
-   CATCH latex;
-     "ERROR: $error";
-   END
--%]
--- expect --
-ERROR: latex error - xelatex exited with errors:
-! Undefined control sequence.
-l.4 \badmacro
 

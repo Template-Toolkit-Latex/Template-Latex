@@ -89,4 +89,4 @@ l.5 \\badmacro
 
 EXPECT
 
-
+done_testing();

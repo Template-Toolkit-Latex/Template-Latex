@@ -7,11 +7,11 @@
 #
 # AUTHOR
 #   Chris Travers  <chris.travers@gmail.com> (Current Maintainer)
-#   Andrew Ford    <a.ford@ford-mason.co.uk> 
+#   Andrew Ford    <a.ford@ford-mason.co.uk>
 #   Andy Wardley   <abw@wardley.org>
 #
 # COPYRIGHT
-#   Copyright (C) 2014      Chris Travers. All Rights Reserved.
+#   Copyright (C) 2014-2016 Chris Travers. All Rights Reserved.
 #   Copyright (C) 2006-2014 Andrew Ford.   All Rights Reserved.
 #   Copyright (C) 1996-2006 Andy Wardley.  All Rights Reserved.
 #
@@ -33,7 +33,7 @@
 #     Andrew Ford, September 2007
 #
 #========================================================================
- 
+
 package Template::Latex;
 
 use strict;
@@ -359,9 +359,9 @@ Barratt with additions for Win32 by Richard Tietjen.
 
 =head1 COPYRIGHT
 
-Copyright (C) 1996-2006 Andy Wardley.  All Rights Reserved.
-
-Copyright (C) 2006-2007 Andrew Ford.  All Rights Reserved.
+  Copyright (C) 1996-2006 Andy Wardley.  All Rights Reserved.
+  Copyright (C) 2006-2014 Andrew Ford.  All Rights Reserved.
+  Copyright (C) 2014-2016 Chris Travers. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

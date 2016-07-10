@@ -8,11 +8,13 @@
 #   Template Toolkit plugin for Latex
 #
 # AUTHOR
-#   Andrew Ford    <a.ford@ford-mason.co.uk>  (current maintainer)
-#   Andy Wardley   <abw@wardley.org>          (original author)
+#   Chris Travers  <chris.travers@gmail.com> (Current Maintainer)
+#   Andrew Ford    <a.ford@ford-mason.co.uk>
+#   Andy Wardley   <abw@wardley.org>
 #
 # COPYRIGHT
-#   Copyright (C) 2006-2007 Andrew Ford.   All Rights Reserved.
+#   Copyright (C) 2014-2016 Chris Travers. All Rights Reserved.
+#   Copyright (C) 2006-2014 Andrew Ford.   All Rights Reserved.
 #   Copyright (C) 1996-2006 Andy Wardley.  All Rights Reserved.
 #
 #   This module is free software; you can redistribute it and/or
@@ -21,7 +23,7 @@
 # HISTORY
 #   * Originally written by Craig Barratt, Apr 28 2001.
 #   * Win32 additions by Richard Tietjen.
-#   * Extracted into a separate Template::Plugin::Latex module by 
+#   * Extracted into a separate Template::Plugin::Latex module by
 #     Andy Wardley, 27 May 2006
 #   * Removed the program pathname options on the FILTER call
 #     Andrew Ford, 05 June 2006
@@ -525,9 +527,9 @@ subsequently been radically refactored by Andrew Ford.
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2006-2009 Andrew Ford.  All Rights Reserved.
-
-Copyright (C) 1996-2006 Andy Wardley.  All Rights Reserved.
+  Copyright (C) 1996-2006 Andy Wardley.  All Rights Reserved.
+  Copyright (C) 2006-2014 Andrew Ford.  All Rights Reserved.
+  Copyright (C) 2014-2016 Chris Travers. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

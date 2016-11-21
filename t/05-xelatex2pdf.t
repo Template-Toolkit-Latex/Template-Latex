@@ -24,9 +24,7 @@ use Template;
 use Template::Test;
 use Template::Test::Latex;
 
-my $run_tests = $ENV{LATEX_TESTING} || $ENV{ALL_TESTING};
-
-$Template::Test::DEBUG = 1;
+my $run_tests = $ENV{XELATEX_TESTING} || $ENV{ALL_TESTING};
 
 my $ttcfg = {
     FILTERS => {
@@ -37,7 +35,7 @@ my $ttcfg = {
 if ($run_tests){
     test_expect(\*DATA, $ttcfg);
 } else {
-    skip_all 'Tests skipped, LATEX_TESTING and ALL_TESTING not set';
+    skip_all 'Tests skipped, XELATEX_TESTING and ALL_TESTING not set';
 }
 
 # Grab just the first $len bytes of the input, and optionally convert
@@ -58,7 +56,7 @@ sub head_factory {
 __END__
 -- test --
 [% USE Latex;
-   out = FILTER latex(format="pdf(pdflatex)")
+   out = FILTER latex(format="pdf(xelatex)")
 -%]
 \documentclass{article}
 \begin{document}
@@ -72,7 +70,7 @@ This is the introduction.
 
 
 -- test --
-[% USE Latex format="pdf(pdflatex)";
+[% USE Latex format="pdf(xelatex)";
    out = FILTER latex
 -%]
 \documentclass{article}
@@ -89,7 +87,7 @@ This is the introduction.
 -- test --
 [% USE Latex;
    TRY; 
-     out = FILTER latex("pdf(pdflatex)") 
+     out = FILTER latex("pdf(xelatex)") 
 -%]
 \documentclass{article}
 \begin{document}
@@ -104,7 +102,7 @@ This is the introduction.
    END
 -%]
 -- expect --
-ERROR: latex error - pdflatex exited with errors:
+ERROR: latex error - xelatex exited with errors:
 ! Undefined control sequence.
 l.4 \badmacro
 

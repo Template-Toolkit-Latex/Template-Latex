@@ -8,11 +8,13 @@
 #   Template Toolkit plugin for Latex
 #
 # AUTHOR
-#   Andrew Ford    <a.ford@ford-mason.co.uk>  (current maintainer)
-#   Andy Wardley   <abw@wardley.org>          (original author)
+#   Chris Travers  <chris.travers@gmail.com> (Current Maintainer)
+#   Andrew Ford    <a.ford@ford-mason.co.uk>
+#   Andy Wardley   <abw@wardley.org>
 #
 # COPYRIGHT
-#   Copyright (C) 2006-2007 Andrew Ford.   All Rights Reserved.
+#   Copyright (C) 2014-2016 Chris Travers. All Rights Reserved.
+#   Copyright (C) 2006-2014 Andrew Ford.   All Rights Reserved.
 #   Copyright (C) 1996-2006 Andy Wardley.  All Rights Reserved.
 #
 #   This module is free software; you can redistribute it and/or
@@ -21,7 +23,7 @@
 # HISTORY
 #   * Originally written by Craig Barratt, Apr 28 2001.
 #   * Win32 additions by Richard Tietjen.
-#   * Extracted into a separate Template::Plugin::Latex module by 
+#   * Extracted into a separate Template::Plugin::Latex module by
 #     Andy Wardley, 27 May 2006
 #   * Removed the program pathname options on the FILTER call
 #     Andrew Ford, 05 June 2006
@@ -42,7 +44,7 @@ use LaTeX::Encode;
 use LaTeX::Table;
 
 
-our $VERSION = 3.05;           # Update "=head1 VERSION" below!!!!
+our $VERSION = 3.09;           # Update "=head1 VERSION" below!!!!
 our $DEBUG; $DEBUG = 0 unless defined $DEBUG;
 our $ERROR   = '';
 our $FILTER  = 'latex';
@@ -64,7 +66,7 @@ sub new {
         my $factory_context = shift;
         my $filter_opts = ref $_[-1] eq 'HASH' ? pop : { };
         my $filter_args = [ @_ ];
-        @$filter_opts{ keys %$options } = values %$options;
+        $filter_opts->{$_} //= $options->{$_} for keys %$options;
         return sub {
             # Template::Plugin::Latex::_filter->run($context, $filter_opts, $filter_args, @_);
             _tt_latex_filter($class, $factory_context, $filter_opts, $filter_args, @_);
@@ -76,7 +78,7 @@ sub new {
         my $factory_context = shift;
         my $filter_opts = ref $_[-1] eq 'HASH' ? pop : { };
         my $filter_args = [ @_ ];
-        @$filter_opts{ keys %$options } = values %$options;
+        $filter_opts->{$_} //= $options->{$_} for keys %$options;
         return sub {
             # Template::Plugin::Latex::_filter->run($context, $filter_opts, $filter_args, @_);
             _tt_latex_encode_filter($class, $factory_context, $filter_opts, $filter_args, @_);
@@ -86,7 +88,7 @@ sub new {
     # and a closure to represent the plugin
     my $plugin = sub {
         my $plugopt = ref $_[-1] eq 'HASH' ? pop : { };
-        @$plugopt{ keys %$options } = values %$options;
+        $plugopt->{$_} //= $options->{$_} for keys %$options;
         # Template::Plugin::Latex::_filter->run($context, $plugopt, @_ );
         _tt_latex_filter($class, $context, $plugopt, {}, @_ );
     };
@@ -235,7 +237,7 @@ Template::Plugin::Latex - Template Toolkit plugin for Latex
 
 =head1 VERSION
 
-This documentation refers to C<Template::Plugin::Latex> version 3.04
+This documentation refers to C<Template::Plugin::Latex> version 3.09
 
 =head1 SYNOPSIS
 
@@ -530,9 +532,9 @@ subsequently been radically refactored by Andrew Ford.
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2006-2009 Andrew Ford.  All Rights Reserved.
-
-Copyright (C) 1996-2006 Andy Wardley.  All Rights Reserved.
+  Copyright (C) 1996-2006 Andy Wardley.  All Rights Reserved.
+  Copyright (C) 2006-2014 Andrew Ford.  All Rights Reserved.
+  Copyright (C) 2014-2016 Chris Travers. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

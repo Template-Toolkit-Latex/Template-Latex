@@ -326,7 +326,7 @@ C<output> parameter.
     ...LaTeX document...
     [% END %]
 
-If you don't explicity specify an output format then the filename
+If you don't explicitly specify an output format then the filename
 extension (e.g. 'pdf' in the above example) will be used to determine
 the correct format.
 
@@ -505,7 +505,7 @@ Underpins the C<table> function.
 The C<latex> filter was distributed as part of the core
 Template Toolkit distribution until version 2.15 (released in May 2006),
 when it was moved into the separate Template-Latex distribution.  The
-C<Latex> plugin must now be explicity to enable the C<latex> filter.
+C<Latex> plugin must now be explicitly to enable the C<latex> filter.
 
 
 =head1 BUGS AND LIMITATIONS

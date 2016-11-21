@@ -182,8 +182,13 @@ sub _tt_latex_filter {
 sub _setup_texinput_paths {
     my ($context) = @_;
     my $template_name = $context->stash->get('template.name');
-    my $include_path  = $context->config->{INCLUDE_PATH} || [];
-    $include_path = [ $include_path ] unless ref $include_path;
+    my $include_path = [];
+
+    # Ask each Template::Provider object for a list of paths. This properly
+    # handles coderefs and objects in INCLUDE_PATH.
+    for my $provider (@{ $context->{LOAD_TEMPLATES} }) {
+        push @$include_path, @{ $provider->paths || [] };
+    }
 
     my @texinput_paths = ("");
     foreach my $path (@$include_path) {
@@ -457,7 +462,7 @@ and can be further interpolated into a LaTeX document template.
 
 =head1 DIAGNOSTICS
 
-Most failures result from invalid LaTeX input and are propogated up from
+Most failures result from invalid LaTeX input and are propagated up from
 L<LaTeX::Driver>, L<LaTeX::Encode> or L<LaTeX::Table>.
 
 Failures detected in this module include:

@@ -43,7 +43,7 @@ use Template::Exception;
 use Template::Plugin::Latex;
 use LaTeX::Driver;
 
-our $VERSION  = 3.10;
+our $VERSION  = '3.11';
 our $DEBUG    = 0 unless defined $DEBUG;
 our $ERROR    = '';
 our $FILTER   = 'latex';        # default filter name

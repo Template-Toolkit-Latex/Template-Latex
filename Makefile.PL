@@ -22,6 +22,7 @@ our $WIN32  = ($^O eq 'MSWin32');
 my %opts = (
     'NAME'	       => 'Template-Plugin-Latex',
     'VERSION_FROM' => 'lib/Template/Plugin/Latex.pm',
+    'MIN_PERL_VERSION' => '5.010',
     'PMLIBDIRS'    => [ 'lib' ], 
     'PREREQ_PM'    => { 
         'Template'      => 2.16,

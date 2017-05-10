@@ -5,7 +5,7 @@ use warnings;
 
 use 5.010;
 
-use lib qw( ./lib );
+use lib qw( . ./lib );
 use Config;
 use File::Spec::Functions qw( catfile );
 use ExtUtils::MakeMaker;
